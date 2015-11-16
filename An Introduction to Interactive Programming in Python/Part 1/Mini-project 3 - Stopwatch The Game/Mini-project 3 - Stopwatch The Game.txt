@@ -1,0 +1,85 @@
+URL : http://www.codeskulptor.org/#user40_5DAbCUZ7VQ_12.py
+
+Code :-
+# "Stopwatch: The Game"
+
+import simplegui
+
+# define global variables
+count = 0
+interval = 100
+x = 0
+y = 0
+D = 0
+var = False
+
+# define helper function format that converts time
+# in tenths of seconds into formatted string A:BC.D
+def format(count):
+    global D
+    A = count//600
+    B = count//10
+    E = B%60
+    B = E//10
+    C = E%10
+    D = count%10
+    return str(A)+':'+str(B)+str(C)+'.'+str(D)
+
+# define helper function xbyy that converts in format x/y
+def xbyy():
+    global x
+    global y
+    return str(x)+'/'+str(y)
+    
+    
+# define event handlers for buttons; "Start", "Stop", "Reset"
+def Start():
+    global var
+    var = True
+    timer.start()
+    
+def Stop():
+    global y
+    global x
+    global D
+    global var
+    if (var == True):
+        y = y+1
+        if (D == 0):
+            x = x+1
+    var = False
+    timer.stop()
+    
+def Reset():
+    global count
+    global y
+    global x
+    count = 0
+    x = 0
+    y = 0
+    timer.stop()
+    
+# define event handler for timer with 0.1 sec interval
+def tick():
+    global count
+    count = count+1
+
+# define draw handler
+def draw_handler(canvas):
+    canvas.draw_text(format(count), [120, 100], 24, "White")
+    canvas.draw_text(xbyy(), [250, 20], 24, "White")
+
+
+    
+# create frame
+frame = simplegui.create_frame("Stopwatch", 300, 200)
+
+# register event handlers
+frame.add_button("Start", Start)
+frame.add_button("Stop", Stop)
+frame.add_button("Reset", Reset)
+frame.set_draw_handler(draw_handler)
+timer = simplegui.create_timer(interval, tick)
+
+# start frame
+frame.start()

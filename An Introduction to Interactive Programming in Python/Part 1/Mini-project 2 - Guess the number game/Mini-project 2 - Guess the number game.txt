@@ -1,0 +1,91 @@
+URL : http://www.codeskulptor.org/#user40_MrnQuedO6q_9.py
+
+Code :-
+# "Guess the number" mini-project
+# input will come from buttons and an input field
+# all output for the game will be printed in the console
+
+import simplegui
+import random
+
+# set default value of var_range to 99 for first run of program
+var_range = 99
+
+# helper function to start and restart the game
+def new_game():
+    # initialize global variables
+    global var_range
+    global secret_number
+    global remain_guess
+    # set secret_number to be a random number
+    secret_number = random.randrange(0, var_range)
+    # set number of remaining guesses for the respective range
+    if (var_range == 99):
+        remain_guess = 7
+    else:
+        remain_guess = 10
+    print "****************New Game:****************"
+    print "Range is [0,",var_range+1,')'
+    print "Number of remaining guesses:", remain_guess
+    
+# define event handlers for control panel
+def range100():
+    # button that changes the range to [0,100) and starts a new game 
+    global var_range
+    var_range = 99
+    print " "
+    new_game()
+
+def range1000():
+    # button that changes the range to [0,1000) and starts a new game     
+    global var_range
+    var_range = 999
+    print " "
+    new_game()
+    
+def input_guess(guess):
+    # main game logic goes here
+    global remain_guess
+    # convert input string guess to an integer
+    guess = int(guess)
+    print " "
+    print "Your Guess was:", guess
+    if (guess == secret_number):
+        print "You guessed Correct!"
+        remain_guess -= 1
+        print "Number of remaining guesses:", remain_guess
+        print "You have Won!\n"
+        new_game()
+    elif (guess > secret_number):
+        print "You guessed Higher."
+        remain_guess -= 1
+        print "Number of remaining guesses:", remain_guess
+        if (remain_guess==0):
+            print "You have run out of remaining guesses!"
+            print "You have lost!"
+            print "The number was ", secret_number
+            print "Better Luck next time!\n"
+            new_game()
+    else:
+        print "You guessed Lower."
+        remain_guess -= 1
+        print "Number of remaining guesses:", remain_guess
+        if (remain_guess==0):
+            print "You have run out of remaining guesses!"
+            print "You have lost!"
+            print "The number was ", secret_number
+            print "Better Luck next time!\n"
+            new_game()
+   
+# create frame
+frame = simplegui.create_frame("Guess the number Game", 200, 200)
+
+# register event handlers for control elements
+frame.add_button("Range is [0,100)", range100)
+frame.add_button("Range is [0,1000)", range1000)
+user_guess = frame.add_input('Your guess', input_guess, 50)
+# start frame
+frame.start()
+
+# call new_game 
+new_game()
